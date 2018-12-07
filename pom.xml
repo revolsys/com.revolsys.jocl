@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.revolsys.jocl</groupId>
+  <artifactId>com.revolsys.jocl</artifactId>
+  <version>2.0.1-SNAPSHOT</version>
+  <name>JOCL Object Oriented API</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jocl</groupId>
+      <artifactId>jocl</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <debug>true</debug>
+          <parameters>true</parameters>
+          <compilerArgument>-parameters</compilerArgument>
+          <testCompilerArgument>-parameters</testCompilerArgument>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>2.2.5</version>
+        <executions>
+          <execution>
+            <id>get-the-git-infos</id>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+            <phase>validate</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Specification-Title>${project.name}</Specification-Title>
+              <Specification-Vendor>${project.organization.name}</Specification-Vendor>
+              <Specification-Version>${project.version}</Specification-Version>
+              <Implementation-Title>${project.name}</Implementation-Title>
+              <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
+              <Implementation-Version>${project.version}</Implementation-Version>
+              <SCM-Commit>${git.branch}-${git.commit.id}-${git.dirty}</SCM-Commit>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+
+  <distributionManagement>
+    <repository>
+      <id>revolsys-releases</id>
+      <name>revolsys-releases</name>
+      <url>https://open.revolsys.com/artifactory/libs-release</url>
+    </repository>
+    <snapshotRepository>
+      <id>revolsys-snapshots</id>
+      <name>revolsys-snapshots</name>
+      <url>https://open.revolsys.com/artifactory/libs-snapshot</url>
+    </snapshotRepository>
+    <site>
+      <id>gh-pages</id>
+      <name>Deployment through GitHub's site deployment plugin</name>
+      <url>github:http://revolsys.github.io/com.revolsys.open</url>
+    </site>
+  </distributionManagement>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+</project>
