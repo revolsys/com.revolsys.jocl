@@ -2,11 +2,6 @@ package com.revolsys.jocl.core;
 
 import static org.jocl.CL.clCreateBuffer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import org.jocl.CL;
 import org.jocl.Pointer;
 import org.jocl.cl_command_queue;
@@ -55,33 +50,7 @@ public class OpenClContextForDevice implements AutoCloseable {
     return new OpenClMemory(memory);
   }
 
-  public OpenClProgram newProgram(final String resource) {
-    String source;
-    final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    try (
-      InputStream in = classLoader.getResourceAsStream(resource)) {
-      if (in == null) {
-        throw new IllegalArgumentException("Unable to read program from: " + resource);
-      } else {
-        try (
-          final BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-          final StringBuffer sb = new StringBuffer();
-          String line = null;
-          while (true) {
-            line = br.readLine();
-            if (line == null) {
-              break;
-            }
-            sb.append(line).append("\n");
-          }
-          source = sb.toString();
-        } catch (final IOException e) {
-          throw new RuntimeException("Error reading program from: " + resource);
-        }
-      }
-    } catch (final IOException e) {
-      throw new RuntimeException("Error reading program from: " + resource);
-    }
+  public OpenClProgram newProgram(final String source) {
     final cl_program id = CL.clCreateProgramWithSource(this.context, 1, new String[] {
       source
     }, null, null);

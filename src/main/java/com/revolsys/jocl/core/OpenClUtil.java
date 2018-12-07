@@ -1,5 +1,9 @@
 package com.revolsys.jocl.core;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,5 +29,33 @@ public class OpenClUtil {
       platforms.add(platform);
     }
     return platforms;
+  }
+
+  public static String sourceFromClasspath(final String path) {
+    final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    try (
+      InputStream in = classLoader.getResourceAsStream(path)) {
+      if (in == null) {
+        throw new IllegalArgumentException("Unable to read source from: " + path);
+      } else {
+        try (
+          final BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+          final StringBuffer sb = new StringBuffer();
+          String line = null;
+          while (true) {
+            line = br.readLine();
+            if (line == null) {
+              break;
+            }
+            sb.append(line).append("\n");
+          }
+          return sb.toString();
+        } catch (final IOException e) {
+          throw new RuntimeException("Error reading source from: " + path);
+        }
+      }
+    } catch (final IOException e) {
+      throw new RuntimeException("Error reading source from: " + path);
+    }
   }
 }
