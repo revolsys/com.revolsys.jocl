@@ -5,6 +5,7 @@ import java.util.List;
 import org.jocl.CL;
 
 import com.revolsys.jocl.core.OpenClDevice;
+import com.revolsys.jocl.core.OpenClInfo;
 import com.revolsys.jocl.core.OpenClPlatform;
 import com.revolsys.jocl.core.OpenClUtil;
 
@@ -14,7 +15,7 @@ public class JoclInfo {
     final OpenClPlatform platform = platforms.get(0);
 
     final List<OpenClDevice> devices = platform.getDevices(CL.CL_DEVICE_TYPE_GPU);
-    for (final OpenClDevice device : devices) {
+    for (final OpenClInfo device : devices) {
       // CL.CL_DEVICE_NAME
       final String deviceName = device.getInfoString(CL.CL_DEVICE_NAME);
       System.out.println("--- Info for device " + deviceName + ": ---");
