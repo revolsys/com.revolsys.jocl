@@ -8,7 +8,10 @@ public class OpenClProgram implements AutoCloseable {
 
   private final cl_program id;
 
-  public OpenClProgram(final cl_program id) {
+  private final OpenClContextForDevice context;
+
+  public OpenClProgram(final OpenClContextForDevice context, final cl_program id) {
+    this.context = context;
     this.id = id;
   }
 
@@ -23,7 +26,7 @@ public class OpenClProgram implements AutoCloseable {
 
   public OpenClKernel newKernel(final String functionName) {
     final cl_kernel kernel_id = CL.clCreateKernel(this.id, functionName, null);
-    return new OpenClKernel(kernel_id);
+    return new OpenClKernel(this.context, kernel_id);
   }
 
   @Override

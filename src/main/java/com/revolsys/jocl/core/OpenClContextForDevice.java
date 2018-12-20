@@ -2,6 +2,8 @@ package com.revolsys.jocl.core;
 
 import static org.jocl.CL.clCreateBuffer;
 
+import java.util.List;
+
 import org.jocl.CL;
 import org.jocl.Pointer;
 import org.jocl.cl_command_queue;
@@ -27,6 +29,20 @@ public class OpenClContextForDevice implements AutoCloseable {
     this.context = CL.clCreateContext(contextProperties, 1, new cl_device_id[] {
       deviceId
     }, null, null, null);
+  }
+
+  public OpenClMemory addNewMemory(final List<OpenClMemory> memories, final long flags,
+    final int size) {
+    final OpenClMemory memory = newMemory(flags, size);
+    memories.add(memory);
+    return memory;
+  }
+
+  public OpenClMemory addNewMemory(final List<OpenClMemory> memories, final long flags,
+    final long size, final Pointer pointer) {
+    final OpenClMemory memory = newMemory(flags, size, pointer);
+    memories.add(memory);
+    return memory;
   }
 
   @Override
@@ -57,7 +73,7 @@ public class OpenClContextForDevice implements AutoCloseable {
     final String compileOptions = "-cl-mad-enable";
     CL.clBuildProgram(id, 0, null, compileOptions, null, null);
 
-    return new OpenClProgram(id);
+    return new OpenClProgram(this, id);
   }
 
   @Override

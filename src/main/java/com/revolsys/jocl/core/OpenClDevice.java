@@ -2,6 +2,7 @@ package com.revolsys.jocl.core;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jocl.CL;
@@ -58,8 +59,8 @@ public class OpenClDevice implements OpenClInfo {
     final long maxWorkItemDimensions = getInfoLong(CL.CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS);
     info.put("CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS", maxWorkItemDimensions);
 
-    final long maxWorkItemSizes[] = getInfoSizes(CL.CL_DEVICE_MAX_WORK_ITEM_SIZES, 3);
-    info.put("CL_DEVICE_MAX_WORK_ITEM_SIZES", Arrays.asList(maxWorkItemSizes));
+    final List<Long> maxWorkItemSizes = getMaxWorkItemSizes();
+    info.put("CL_DEVICE_MAX_WORK_ITEM_SIZES", maxWorkItemSizes);
 
     final long maxWorkGroupSize = getInfoSize(CL.CL_DEVICE_MAX_WORK_GROUP_SIZE);
     info.put("CL_DEVICE_MAX_WORK_GROUP_SIZE", maxWorkGroupSize);
@@ -155,6 +156,11 @@ public class OpenClDevice implements OpenClInfo {
     final long sizes[] = new long[1];
     CL.clGetDeviceInfo(this.deviceId, paramName, 0, null, sizes);
     return sizes[0];
+  }
+
+  public List<Long> getMaxWorkItemSizes() {
+    final List<Long> maxWorkItemSizes = getInfoSizes(CL.CL_DEVICE_MAX_WORK_ITEM_SIZES, 3);
+    return maxWorkItemSizes;
   }
 
   public OpenClPlatform getPlatform() {
