@@ -70,6 +70,15 @@ public class OpenClKernel implements AutoCloseable {
     return addArg(value);
   }
 
+  public OpenClMemory addArgMemory(final List<OpenClMemory> memories, final float... values) {
+    final Pointer pointer = Pointer.to(values);
+    final int size = values.length * Sizeof.cl_float;
+    final long flags = CL.CL_MEM_READ_ONLY | CL.CL_MEM_USE_HOST_PTR;
+    final OpenClMemory memory = this.context.addNewMemory(memories, flags, size, pointer);
+    addArg(memory);
+    return memory;
+  }
+
   public OpenClMemory addArgMemory(final List<OpenClMemory> memories, final int... values) {
     final Pointer pointer = Pointer.to(values);
     final int size = values.length * Sizeof.cl_int;
