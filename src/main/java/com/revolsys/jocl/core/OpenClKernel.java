@@ -63,7 +63,7 @@ public class OpenClKernel implements AutoCloseable {
   }
 
   public OpenClKernel addArgFloat(final double value) {
-    return addArg(value);
+    return addArg((float)value);
   }
 
   public OpenClKernel addArgInt(final int value) {
