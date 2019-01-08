@@ -76,6 +76,15 @@ public class OpenClContextForDevice implements AutoCloseable {
     return new OpenClProgram(this, id);
   }
 
+  public OpenClProgram newProgram(final String... sources) {
+    final cl_program id = CL.clCreateProgramWithSource(this.context, sources.length, sources, null,
+      null);
+    final String compileOptions = "-cl-mad-enable";
+    CL.clBuildProgram(id, 0, null, compileOptions, null, null);
+
+    return new OpenClProgram(this, id);
+  }
+
   @Override
   public String toString() {
     return this.context.toString();
