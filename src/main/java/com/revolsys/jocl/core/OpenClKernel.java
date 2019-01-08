@@ -32,7 +32,7 @@ public class OpenClKernel implements AutoCloseable {
     final Pointer pointer = Pointer.to(new float[] {
       value
     });
-    return addArg(Sizeof.cl_double, pointer);
+    return addArg(Sizeof.cl_float, pointer);
   }
 
   public OpenClKernel addArg(final int value) {
