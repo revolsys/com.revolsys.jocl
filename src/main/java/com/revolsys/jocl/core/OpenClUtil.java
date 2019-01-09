@@ -16,8 +16,7 @@ public class OpenClUtil {
     try {
       CL.setExceptionsEnabled(true);
       available = true;
-    } catch (final Exception e) {
-      e.printStackTrace();
+    } catch (final Throwable e) {
     }
   }
 
