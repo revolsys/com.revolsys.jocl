@@ -11,24 +11,36 @@ import org.jocl.CL;
 import org.jocl.cl_platform_id;
 
 public class OpenClUtil {
+  private static boolean available = false;
   static {
-    CL.setExceptionsEnabled(true);
+    try {
+      CL.setExceptionsEnabled(true);
+      available = true;
+    } catch (final Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public static List<OpenClPlatform> getPlatforms() {
-    final int numPlatformsArray[] = new int[1];
-    CL.clGetPlatformIDs(0, null, numPlatformsArray);
-    final int numPlatforms = numPlatformsArray[0];
-
-    final cl_platform_id ids[] = new cl_platform_id[numPlatforms];
-    CL.clGetPlatformIDs(ids.length, ids, null);
-
     final List<OpenClPlatform> platforms = new ArrayList<>();
-    for (final cl_platform_id id : ids) {
-      final OpenClPlatform platform = new OpenClPlatform(id);
-      platforms.add(platform);
+    if (isAvailable()) {
+      final int numPlatformsArray[] = new int[1];
+      CL.clGetPlatformIDs(0, null, numPlatformsArray);
+      final int numPlatforms = numPlatformsArray[0];
+
+      final cl_platform_id ids[] = new cl_platform_id[numPlatforms];
+      CL.clGetPlatformIDs(ids.length, ids, null);
+
+      for (final cl_platform_id id : ids) {
+        final OpenClPlatform platform = new OpenClPlatform(id);
+        platforms.add(platform);
+      }
     }
     return platforms;
+  }
+
+  public static boolean isAvailable() {
+    return available;
   }
 
   public static String sourceFromClasspath(final String path) {
