@@ -33,16 +33,30 @@ public class OpenClContextForDevice implements AutoCloseable {
 
   public OpenClMemory addNewMemory(final List<OpenClMemory> memories, final long flags,
     final int size) {
-    final OpenClMemory memory = newMemory(flags, size);
-    memories.add(memory);
-    return memory;
+    try {
+      final OpenClMemory memory = newMemory(flags, size);
+      memories.add(memory);
+      return memory;
+    } catch (RuntimeException | Error e) {
+      for (final OpenClMemory memory : memories) {
+        memory.close();
+      }
+      throw e;
+    }
   }
 
   public OpenClMemory addNewMemory(final List<OpenClMemory> memories, final long flags,
     final long size, final Pointer pointer) {
-    final OpenClMemory memory = newMemory(flags, size, pointer);
-    memories.add(memory);
-    return memory;
+    try {
+      final OpenClMemory memory = newMemory(flags, size, pointer);
+      memories.add(memory);
+      return memory;
+    } catch (RuntimeException | Error e) {
+      for (final OpenClMemory memory : memories) {
+        memory.close();
+      }
+      throw e;
+    }
   }
 
   @Override

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.revolsys.jocl</groupId>
   <artifactId>com.revolsys.jocl</artifactId>
-  <version>2.0.1-alpha1</version>
+  <version>2.0.1-alpha2</version>
   <name>JOCL Object Oriented API</name>
 
   <dependencies>
